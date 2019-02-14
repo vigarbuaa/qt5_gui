@@ -5,124 +5,19 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
+from TableBasicCls import TableBasic 
+from lineEditCls import lineEditDemo 
+from TreeWidgetDemoCls import TreeWidgetDemo 
+from GridFormExampleCls import GridFormExample 
 # 1. [done] add menu bar ,add several actions
 # 2. [done]add lineedit dialog (qt04_lineEdit01.py)
-# 2. add openfile dialog (qt04_QFileDialog.py)
+# 2. [done]add openfile dialog (qt04_QFileDialog.py)
 # 3. add table monitor, open excel/csv file--> show data in table view --> export file
-# 4. plot in table view(pyecharts)
+# 4. [done]plot in table view (pyecharts)
 # 5. split ui and logic (engine / UI / frame)
 # 6. 用qtdesigner改写
 # 7. 用element ui 改写
 
-class TreeWidgetDemo(QMainWindow):   
-    def __init__(self,parent=None):
-        super(TreeWidgetDemo,self).__init__(parent)
-        self.setWindowTitle('TreeWidget 例子')
-        self.tree = QTreeWidget()
-    # 设置列数
-        self.tree.setColumnCount(2)
-    # 设置头的标题
-        self.tree.setHeaderLabels(['Key','Value'])
-        # 设置根节点
-        root= QTreeWidgetItem(self.tree)
-        root.setText(0,'root')
-        root.setIcon(0,QIcon("./images/root.png"))
-        # 设置列宽
-        self.tree.setColumnWidth(0, 160)
-
-        ### 设置节点的背景颜色
-        #brush_red = QBrush(Qt.red)
-        #root.setBackground(0, brush_red) 
-        #brush_green = QBrush(Qt.green)
-        #root.setBackground(1, brush_green) 
-
-        # 设置子节点1
-        child1 = QTreeWidgetItem(root)
-        child1.setText(0,'child1')
-        child1.setText(1,'ios')
-        child1.setIcon(0,QIcon("./images/IOS.png"))
-        child1.setCheckState(0, Qt.Checked)
-
-        # 设置子节点2
-        child2 = QTreeWidgetItem(root)
-        child2.setText(0,'child2')
-        child2.setText(1,'')
-        child2.setIcon(0,QIcon("./images/android.png"))
-
-        # 设置子节点3
-        child3 = QTreeWidgetItem(child2)
-        child3.setText(0,'child3')
-        child3.setText(1,'android')
-        child3.setIcon(0,QIcon("./images/music.png"))
-
-        self.tree.addTopLevelItem(root)
-        # 结点全部展开
-        self.tree.expandAll()
-
-        self.setCentralWidget(self.tree)  
-
-class TableBasic( QWidget ):
-    def __init__(self):
-        super().__init__()
-        self.initUI()
-
-    def initUI(self):
-        self.setWindowTitle("QTableWidget Basic 例子")
-        self.resize(500,300);
-        conLayout = QHBoxLayout()
-        self.tableWidget= QTableWidget()
-        self.tableWidget.setRowCount(5)
-        self.tableWidget.setColumnCount(4)
-        conLayout.addWidget(self.tableWidget )
-
-        self.tableWidget.setHorizontalHeaderLabels(['姓名','性别','体重', '显示图片'])  
-        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-
-        newItem = QTableWidgetItem("张三")    
-        self.tableWidget.setItem(0, 0, newItem)  
-
-        newItem = QTableWidgetItem("男")  
-        self.tableWidget.setItem(0, 1, newItem)  
-
-        newItem = QTableWidgetItem("160")  
-        self.tableWidget.setItem(0, 2, newItem)   
-
-        newItem = QTableWidgetItem(QIcon("./images/bao1.png"), "背包")
-        self.tableWidget.setItem(0, 3, newItem ) 
-        self.setLayout(conLayout)
-
-########################################################################
-class GridFormExample(QWidget):
-    """"""
-    #----------------------------------------------------------------------
-    def __init__(self,parent=None):
-        super(GridFormExample, self).__init__(parent)
-        self.initUI()
-
-    def initUI(self):            
-        titleLabel = QLabel('标题')  
-        authorLabel = QLabel('提交人')  
-        contentLabel = QLabel('申告内容')  
- 
-        titleEdit = QLineEdit()  
-        authorEdit = QLineEdit()  
-        contentEdit = QTextEdit()  
- 
-        grid = QGridLayout()  
-        grid.setSpacing(10)  
- 
-        grid.addWidget(titleLabel, 1, 0)  
-        grid.addWidget(titleEdit, 1, 1)  
-  
-        grid.addWidget(authorLabel, 2, 0)  
-        grid.addWidget(authorEdit, 2, 1)  
-  
-        grid.addWidget(contentLabel, 3, 0)  
-        grid.addWidget(contentEdit, 3, 1, 5, 1)  
-          
-        self.setLayout(grid)   
-        self.setGeometry(300, 300, 350, 300)  
-    
 class FontDialogDemo(QWidget):
     def __init__(self, parent=None):
         super(FontDialogDemo, self).__init__(parent)
@@ -140,38 +35,6 @@ class FontDialogDemo(QWidget):
         if ok:
             self.fontLineEdit.setFont(font)
             
-########################################################################
-class lineEditDemo(QWidget):
-    """"""
-    #----------------------------------------------------------------------
-    def __init__(self,parent=None):
-        """Constructor"""
-        super(lineEditDemo,self).__init__(parent)
-        self.initUI()
-    
-    def initUI(self):
-        self.setWindowTitle("QLineEdit example")
-        self.flo=QFormLayout()
-        self.pNormalLineEdit = QLineEdit()
-        self.pNoEchoLineEdit = QLineEdit()
-        self.pPasswordLineEdit = QLineEdit( )
-        self.pPasswordEchoOnEditLineEdit = QLineEdit()
-        self.flo.addRow("Normal", self.pNormalLineEdit)
-        self.flo.addRow("NoEcho", self.pNoEchoLineEdit)
-        self.flo.addRow("Password", self.pPasswordLineEdit)
-        self.flo.addRow("PasswordEchoOnEdit", self.pPasswordEchoOnEditLineEdit)
-        self.pNormalLineEdit.setPlaceholderText("Normal")
-        self.pNoEchoLineEdit.setPlaceholderText("NoEcho")
-        self.pPasswordLineEdit.setPlaceholderText("Password")
-        self.pPasswordEchoOnEditLineEdit.setPlaceholderText("PasswordEchoOnEdit")
-
-    # 设置显示效果
-        self.pNormalLineEdit.setEchoMode(QLineEdit.Normal)
-        self.pNoEchoLineEdit.setEchoMode(QLineEdit.NoEcho)
-        self.pPasswordLineEdit.setEchoMode(QLineEdit.Password)
-        self.pPasswordEchoOnEditLineEdit.setEchoMode(QLineEdit.PasswordEchoOnEdit)
-        self.setLayout(self.flo)
-   
 ########################################################################
 class Example(QMainWindow):
     """"""
