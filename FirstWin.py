@@ -4,7 +4,7 @@ import sys
 #from PyQt5.QtWidgets import  QDesktopWidget,QTreeWidgetItem,QTreeWidget,QFormLayout,QFontDialog,QLabel,QPushButton,QVBoxLayout,QHBoxLayout, QApplication,QWidget,QMenu,QMainWindow, qApp, QAction,QLineEdit
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
-
+from PyQt5.QtCore import Qt
 # 1. [done] add menu bar ,add several actions
 # 2. [done]add lineedit dialog (qt04_lineEdit01.py)
 # 2. add openfile dialog (qt04_QFileDialog.py)
@@ -14,10 +14,86 @@ from PyQt5.QtGui import QIcon
 # 6. 用qtdesigner改写
 # 7. 用element ui 改写
 
+class TreeWidgetDemo(QMainWindow):   
+    def __init__(self,parent=None):
+        super(TreeWidgetDemo,self).__init__(parent)
+        self.setWindowTitle('TreeWidget 例子')
+        self.tree = QTreeWidget()
+    # 设置列数
+        self.tree.setColumnCount(2)
+    # 设置头的标题
+        self.tree.setHeaderLabels(['Key','Value'])
+        # 设置根节点
+        root= QTreeWidgetItem(self.tree)
+        root.setText(0,'root')
+        root.setIcon(0,QIcon("./images/root.png"))
+        # 设置列宽
+        self.tree.setColumnWidth(0, 160)
+
+        ### 设置节点的背景颜色
+        #brush_red = QBrush(Qt.red)
+        #root.setBackground(0, brush_red) 
+        #brush_green = QBrush(Qt.green)
+        #root.setBackground(1, brush_green) 
+
+        # 设置子节点1
+        child1 = QTreeWidgetItem(root)
+        child1.setText(0,'child1')
+        child1.setText(1,'ios')
+        child1.setIcon(0,QIcon("./images/IOS.png"))
+        child1.setCheckState(0, Qt.Checked)
+
+        # 设置子节点2
+        child2 = QTreeWidgetItem(root)
+        child2.setText(0,'child2')
+        child2.setText(1,'')
+        child2.setIcon(0,QIcon("./images/android.png"))
+
+        # 设置子节点3
+        child3 = QTreeWidgetItem(child2)
+        child3.setText(0,'child3')
+        child3.setText(1,'android')
+        child3.setIcon(0,QIcon("./images/music.png"))
+
+        self.tree.addTopLevelItem(root)
+        # 结点全部展开
+        self.tree.expandAll()
+
+        self.setCentralWidget(self.tree)  
+
+class TableBasic( QWidget ):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle("QTableWidget Basic 例子")
+        self.resize(500,300);
+        conLayout = QHBoxLayout()
+        self.tableWidget= QTableWidget()
+        self.tableWidget.setRowCount(5)
+        self.tableWidget.setColumnCount(4)
+        conLayout.addWidget(self.tableWidget )
+
+        self.tableWidget.setHorizontalHeaderLabels(['姓名','性别','体重', '显示图片'])  
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+        newItem = QTableWidgetItem("张三")    
+        self.tableWidget.setItem(0, 0, newItem)  
+
+        newItem = QTableWidgetItem("男")  
+        self.tableWidget.setItem(0, 1, newItem)  
+
+        newItem = QTableWidgetItem("160")  
+        self.tableWidget.setItem(0, 2, newItem)   
+
+        newItem = QTableWidgetItem(QIcon("./images/bao1.png"), "背包")
+        self.tableWidget.setItem(0, 3, newItem ) 
+        self.setLayout(conLayout)
+
 ########################################################################
 class GridFormExample(QWidget):
     """"""
-
     #----------------------------------------------------------------------
     def __init__(self,parent=None):
         super(GridFormExample, self).__init__(parent)
@@ -46,7 +122,6 @@ class GridFormExample(QWidget):
           
         self.setLayout(grid)   
         self.setGeometry(300, 300, 350, 300)  
-    
     
 class FontDialogDemo(QWidget):
     def __init__(self, parent=None):
@@ -129,13 +204,27 @@ class Example(QMainWindow):
         
         central = QWidget()
         self.setCentralWidget(central)
-        main_layout= QGridLayout()
-        self.centralWidget().setLayout(main_layout)
-        positions = [(i,j) for i in range(2) for j in range(2)] 
-        for position in positions:
-            aa=GridFormExample()
-            main_layout.addWidget(aa,*position)
-        #self.initMenu()
+        #main_layout= QGridLayout()
+        h_layout=QHBoxLayout()
+        treeElem=TreeWidgetDemo()
+        tableElem= TableBasic()
+        gridFormElem=GridFormExample()
+        lineEditElem= lineEditDemo()
+        h_layout.addWidget(treeElem)
+        h_layout.addWidget(tableElem)
+        h2_layout=QHBoxLayout()
+        h2_layout.addWidget(gridFormElem)
+        h2_layout.addWidget(lineEditElem)
+        v_layout=QVBoxLayout()
+        v_layout.addLayout(h_layout)
+        v_layout.addLayout(h2_layout)
+        self.centralWidget().setLayout(v_layout)
+        
+#        positions = [(i,j) for i in range(2) for j in range(2)] 
+#        for position in positions:
+#            aa=TreeWidgetDemo()
+#            main_layout.addWidget(aa,*position)
+        self.initMenu()
         self.show()
         #self.center()
     
