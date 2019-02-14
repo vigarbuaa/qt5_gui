@@ -1,21 +1,59 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from PyQt5.QtWidgets import QFontDialog,QLabel,QPushButton,QVBoxLayout, QApplication,QWidget,QMenu,QMainWindow, qApp, QAction
+#from PyQt5.QtWidgets import  QDesktopWidget,QTreeWidgetItem,QTreeWidget,QFormLayout,QFontDialog,QLabel,QPushButton,QVBoxLayout,QHBoxLayout, QApplication,QWidget,QMenu,QMainWindow, qApp, QAction,QLineEdit
+from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 
 # 1. [done] add menu bar ,add several actions
+# 2. [done]add lineedit dialog (qt04_lineEdit01.py)
 # 2. add openfile dialog (qt04_QFileDialog.py)
 # 3. add table monitor, open excel/csv file--> show data in table view --> export file
 # 4. plot in table view(pyecharts)
-# 5. plot in table view(pyecharts)
+# 5. split ui and logic (engine / UI / frame)
+# 6. 用qtdesigner改写
+# 7. 用element ui 改写
 
+########################################################################
+class GridFormExample(QWidget):
+    """"""
+
+    #----------------------------------------------------------------------
+    def __init__(self,parent=None):
+        super(GridFormExample, self).__init__(parent)
+        self.initUI()
+
+    def initUI(self):            
+        titleLabel = QLabel('标题')  
+        authorLabel = QLabel('提交人')  
+        contentLabel = QLabel('申告内容')  
+ 
+        titleEdit = QLineEdit()  
+        authorEdit = QLineEdit()  
+        contentEdit = QTextEdit()  
+ 
+        grid = QGridLayout()  
+        grid.setSpacing(10)  
+ 
+        grid.addWidget(titleLabel, 1, 0)  
+        grid.addWidget(titleEdit, 1, 1)  
+  
+        grid.addWidget(authorLabel, 2, 0)  
+        grid.addWidget(authorEdit, 2, 1)  
+  
+        grid.addWidget(contentLabel, 3, 0)  
+        grid.addWidget(contentEdit, 3, 1, 5, 1)  
+          
+        self.setLayout(grid)   
+        self.setGeometry(300, 300, 350, 300)  
+    
+    
 class FontDialogDemo(QWidget):
     def __init__(self, parent=None):
         super(FontDialogDemo, self).__init__(parent)
         layout = QVBoxLayout()
         self.fontButton  = QPushButton("choose font")
-        self.fontButton .clicked.connect(self.getFont)
+        self.fontButton.clicked.connect(self.getFont)
         layout.addWidget(self.fontButton )
         self.fontLineEdit  = QLabel("Hello,测试字体例子")
         layout.addWidget(self.fontLineEdit )
@@ -30,37 +68,34 @@ class FontDialogDemo(QWidget):
 ########################################################################
 class lineEditDemo(QWidget):
     """"""
-
     #----------------------------------------------------------------------
     def __init__(self,parent=None):
         """Constructor"""
         super(lineEditDemo,self).__init__(parent)
+        self.initUI()
     
     def initUI(self):
-        self.setwindowtitle("QLineEdit example")
-        flo=QFormLayout()
-        pNormalLineEdit = QLineEdit()
-        pNoEchoLineEdit = QLineEdit()
-        pPasswordLineEdit = QLineEdit( )
-        pPasswordEchoOnEditLineEdit = QLineEdit()
-
-        flo.addRow("Normal", pNormalLineEdit)
-        flo.addRow("NoEcho", pNoEchoLineEdit)
-        flo.addRow("Password", pPasswordLineEdit)
-        flo.addRow("PasswordEchoOnEdit", pPasswordEchoOnEditLineEdit)
-        
-        pNormalLineEdit.setPlaceholderText("Normal")
-        pNoEchoLineEdit.setPlaceholderText("NoEcho")
-        pPasswordLineEdit.setPlaceholderText("Password")
-        pPasswordEchoOnEditLineEdit.setPlaceholderText("PasswordEchoOnEdit")
+        self.setWindowTitle("QLineEdit example")
+        self.flo=QFormLayout()
+        self.pNormalLineEdit = QLineEdit()
+        self.pNoEchoLineEdit = QLineEdit()
+        self.pPasswordLineEdit = QLineEdit( )
+        self.pPasswordEchoOnEditLineEdit = QLineEdit()
+        self.flo.addRow("Normal", self.pNormalLineEdit)
+        self.flo.addRow("NoEcho", self.pNoEchoLineEdit)
+        self.flo.addRow("Password", self.pPasswordLineEdit)
+        self.flo.addRow("PasswordEchoOnEdit", self.pPasswordEchoOnEditLineEdit)
+        self.pNormalLineEdit.setPlaceholderText("Normal")
+        self.pNoEchoLineEdit.setPlaceholderText("NoEcho")
+        self.pPasswordLineEdit.setPlaceholderText("Password")
+        self.pPasswordEchoOnEditLineEdit.setPlaceholderText("PasswordEchoOnEdit")
 
     # 设置显示效果
-        pNormalLineEdit.setEchoMode(QLineEdit.Normal)
-        pNoEchoLineEdit.setEchoMode(QLineEdit.NoEcho)
-        pPasswordLineEdit.setEchoMode(QLineEdit.Password)
-        pPasswordEchoOnEditLineEdit.setEchoMode(QLineEdit.PasswordEchoOnEdit)
-                            
-        self.setLayout(flo)
+        self.pNormalLineEdit.setEchoMode(QLineEdit.Normal)
+        self.pNoEchoLineEdit.setEchoMode(QLineEdit.NoEcho)
+        self.pPasswordLineEdit.setEchoMode(QLineEdit.Password)
+        self.pPasswordEchoOnEditLineEdit.setEchoMode(QLineEdit.PasswordEchoOnEdit)
+        self.setLayout(self.flo)
    
 ########################################################################
 class Example(QMainWindow):
@@ -91,11 +126,22 @@ class Example(QMainWindow):
         
     #----------------------------------------------------------------------
     def initUI(self):
-        """"""
         
+        central = QWidget()
+        self.setCentralWidget(central)
+        main_layout= QGridLayout()
+        self.centralWidget().setLayout(main_layout)
+        positions = [(i,j) for i in range(2) for j in range(2)] 
+        for position in positions:
+            aa=GridFormExample()
+            main_layout.addWidget(aa,*position)
+        #self.initMenu()
+        self.show()
+        #self.center()
+    
+    def initMenu(self):
         self.statusbar = self.statusBar()
         self.statusbar.showMessage("Ready")
-        
         exitAct=QAction(QIcon("exit.png"),'&Exit',self)
         exitAct.setShortcut('Ctrl+Q')
         exitAct.setStatusTip("Exit Application")
@@ -133,15 +179,22 @@ class Example(QMainWindow):
         dialogMenu.addAction(fontAct)
         fontAct.triggered.connect(self.fontSelectDemo.show)
 
+        self.lineEditDemo=lineEditDemo()
+        lineAct=QAction(QIcon("exit.png"),'&LineEdit',self)
+        lineAct.setShortcut('Ctrl+E')
+        lineAct.setStatusTip("line edit demo")
+        dialogMenu.addAction(lineAct)
+        lineAct.triggered.connect(self.lineEditDemo.show)
+
         toolMenu=menubar.addMenu("Tool")
         toolMenu.addAction('spider')
         toolMenu.addAction('stock')
         toolMenu.addAction('qihuo')
         toolMenu.addAction('futu')
 
-        self.setGeometry(300,300,800,150)
+        #self.setGeometry(50,50,800,550)
         self.setWindowTitle('vigar QT 框架')
-        self.show()
+        #self.resize(800,600)
         
     #---------------pop up menu definition-------------------------------------------------------
     def contextMenuEvent(self,event):
@@ -153,6 +206,11 @@ class Example(QMainWindow):
         action = cmenu.exec_(self.mapToGlobal(event.pos()))
         if action == quitAct:
             qApp.quit()
+            
+    def center(self):  
+        screen = QDesktopWidget().screenGeometry()  
+        size = self.geometry()        
+        self.move((screen.width() - size.width()) / 2,  (screen.height() - size.height()) / 2)  
 
 if __name__ == '__main__':
     app= QApplication(sys.argv)
