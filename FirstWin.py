@@ -8,7 +8,9 @@ from PyQt5.QtCore import Qt
 from TableBasicCls import TableBasic 
 from lineEditCls import lineEditDemo 
 from TreeWidgetDemoCls import TreeWidgetDemo 
-from GridFormExampleCls import GridFormExample 
+from GridFormExampleCls import GridFormExample
+from engine import * 
+from EventType import * 
 # 1. [done] add menu bar ,add several actions
 # 2. [done]add lineedit dialog (qt04_lineEdit01.py)
 # 2. [done]add openfile dialog (qt04_QFileDialog.py)
@@ -39,9 +41,10 @@ class FontDialogDemo(QWidget):
 class Example(QMainWindow):
     """"""
     #----------------------------------------------------------------------
-    def __init__(self):
+    def __init__(self,eventEngine):
         """Constructor"""
         super().__init__()
+        self.event_engine = eventEngine
         self.initUI()
         
     #----------------------------------------------------------------------
@@ -71,7 +74,7 @@ class Example(QMainWindow):
         h_layout=QHBoxLayout()
         treeElem=TreeWidgetDemo()
         tableElem= TableBasic()
-        gridFormElem=GridFormExample()
+        gridFormElem=GridFormExample(self.event_engine)
         lineEditElem= lineEditDemo()
         h_layout.addWidget(treeElem)
         h_layout.addWidget(tableElem)
@@ -166,5 +169,6 @@ class Example(QMainWindow):
 
 if __name__ == '__main__':
     app= QApplication(sys.argv)
-    ex=Example()
+    event_engine= EventEngine()
+    ex=Example(event_engine)
     sys.exit(app.exec_())

@@ -3,7 +3,8 @@ from __future__ import print_function
 from collections import defaultdict
 import inspect
 import ctypes
-
+from PyQt5.QtCore import QTimer
+from EventType import  *
 
 def _async_raise(tid, exctype):
     """raises the exception, performs cleanup if needed"""
@@ -19,10 +20,8 @@ def _async_raise(tid, exctype):
         ctypes.pythonapi.PyThreadState_SetAsyncExc(tid, None)
         raise SystemError("PyThreadState_SetAsyncExc failed")
 
-
 def stop_thread(thread):
     _async_raise(thread.ident, SystemExit)
-
 
 class Event:
     """事件对象"""
@@ -49,7 +48,16 @@ class EventEngine(object):
         self.__general_handlers = []
         self.__active = False
         self.__active = True
-
+        # 计时器，用于触发计时器事件
+        self.__timer = QTimer()
+        self.__timer.timeout.connect(self.__onTimer) 
+        self.__timer.start(2000)
+        
+    def __onTimer(self):
+        event=Event(type_=EVENT_TIMER)
+        print("put Timerevent")
+        self.put(event)
+        
     def __process(self, event):
         """处理事件"""
         # 检查是否存在对该事件进行监听的处理函数
@@ -99,7 +107,7 @@ class EventEngine(object):
         """注销通用事件处理函数监听"""
         if handler in self.__general_handlers:
             self.__general_handlers.remove(handler)
-            
+
 ########################################################################
 class Personal():
     """"""
@@ -110,7 +118,7 @@ class Personal():
         self.sex=sex
         self.age=age
         self.name=name
-    
+
 ########################################################################
 class TestEngine():
     """"""
@@ -120,19 +128,19 @@ class TestEngine():
         self.event_engine= EventEngine
         print("TestEngine init")
         self.event_engine.register("test_log",self.processLog)
-     
+
     def processLog(self,Event):
         data= Event.dict_
-        
+
         print("process event: " + str(data.sex) + "|" + str(data.age) + "|" + str(data.name))
-    
+
 if __name__=='__main__':
     print("hello event engine")
     event_engine= EventEngine()
     testDemo= TestEngine(event_engine)
     person=Personal("male",22,"vigar")
     event_type="test_log"
-    
+
     for elem in range(10):
         person= Personal("male",elem,"vigar")
         event_demo= Event(person,event_type)
