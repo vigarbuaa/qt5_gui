@@ -100,6 +100,7 @@ if __name__ == '__main__':
     print("------------------")
     
     server.sendMail("vigarcheck@bccto.me", '功能验证 function', '我需要验收,逗吧')
+    
     """
     server.getLatestMailInfo()
     print("------------------")
