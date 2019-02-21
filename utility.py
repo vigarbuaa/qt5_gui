@@ -6,10 +6,14 @@ import json
 from pathlib import Path
 from typing import Callable
 import numpy as np
+import time
+
+def todayDateStr():
+    return  time.strftime("%Y-%m-%d",time.localtime())
 
 def get_path(temp_name: str):
     """
-    Get path where trader is running in.
+       Get path where trader is running in.
     """
     cwd = Path.cwd()
     temp_path = cwd.joinpath(temp_name)
@@ -46,7 +50,6 @@ def get_folder_path(folder_name: str):
         folder_path.mkdir()
     return folder_path
 
-
 def get_icon_path(filepath: str, ico_name: str):
     """
     Get path for icon file with ico name.
@@ -60,7 +63,7 @@ def load_json(filename: str):
     Load data from json file in temp path.
     """
     filepath = get_file_path(filename)
-
+    print(filepath)
     if filepath.exists():
         with open(filepath, mode='r') as f:
             data = json.load(f)
@@ -76,3 +79,7 @@ def save_json(filename: str, data: dict):
     filepath = get_file_path(filename)
     with open(filepath, mode='w+') as f:
         json.dump(data, f, indent=4)
+
+if __name__ == '__main__':
+    a=load_json("mail.json")
+    print(a)

@@ -11,9 +11,6 @@ from TreeWidgetDemoCls import TreeWidgetDemo
 from GridFormExampleCls import GridFormExample
 from engine import * 
 from EventType import * 
-# 1. [done] add menu bar ,add several actions
-# 2. [done]add lineedit dialog (qt04_lineEdit01.py)
-# 2. [done]add openfile dialog (qt04_QFileDialog.py)
 # 3. add table monitor, open excel/csv file--> show data in table view --> export file
 # 4. [done]plot in table view (pyecharts)
 # 5. split ui and logic (engine / UI / frame)

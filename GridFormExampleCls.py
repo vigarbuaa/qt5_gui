@@ -1,12 +1,5 @@
 # -*- coding: utf-8 -*- 
 
-'''
-    【简介】
-	PyQT5中单元格添加图片例子
-
-
-'''
-
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
