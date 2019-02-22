@@ -9,8 +9,6 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore  import *
 from emailEngine import *
 
-# add button in this item
-
 class TableBasic( QWidget ):
          
 	def __init__(self):
@@ -37,26 +35,20 @@ class TableBasic( QWidget ):
 		self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 		i=0
 		for mail in self.mailHeaders:
-			print(mail)
-			print(mail.__dict__)
-			newItem = QTableWidgetItem(mail.time_str)    
-			self.tableWidget.setItem(i, 0, newItem)  
+			newItem = QTableWidgetItem(mail.time_str) 
+			self.tableWidget.setItem(i, 0, newItem)
 		  
 			newItem = QTableWidgetItem(mail.sender)  
 			self.tableWidget.setItem(i, 1, newItem)  
 		  
-			newItem = QTableWidgetItem(mail.subject)  
-			self.tableWidget.setItem(i, 2, newItem)   
+			newItem = QTableWidgetItem(mail.subject)
+			self.tableWidget.setItem(i, 2, newItem) 
 			
 			send_button= QPushButton("转发")
-			#newItem = QTableWidgetItem(send_button)  
 			self.tableWidget.setCellWidget(i,3,send_button)
-			#self.tableWidget.setItem(i, 3, newItem)   
 			
 			i=i+1
 		
-		#newItem = QTableWidgetItem(QIcon("./images/bao1.png"), "背包")
-		#self.tableWidget.setItem(0, 3, newItem ) 
 		self.setLayout(conLayout)
 
 if __name__ == '__main__':

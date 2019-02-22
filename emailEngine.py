@@ -35,6 +35,18 @@ class EmailEngine(object):
     def sendMail(self,to_addr,subject,content):
         self.server.send_mail(to_addr,{'subject':subject,'content_text':content})
 
+    def forwardMail(self,to_addr,mail_id):
+        mail= self.getMailById(mail_id)
+        if mail:
+            print("forward mail")
+            self.server.send_mail(to_addr,{'subject':mail['subject'],'content_html':mail['content_text']})
+        else:
+            print(str(mail_id) + " is null, no need to forward it")
+        
+    def getMailById(self,mail_id):
+        mail=self.server.get_mail(mail_id)
+        return mail
+    
     def getMailInfo(self,start_index, end_index):
         mails=[]
         try:
@@ -96,12 +108,21 @@ if __name__ == '__main__':
     print(config['mail']+"--"+ config['passwd'])
     server = EmailEngine(config['mail'],config['passwd'])
     #server = EmailEngine("vigarxueer@126.com","opcu@163")
-    server.getLatestMailInfo()
-    print("------------------")
+    #server.getLatestMailInfo()
+    print("--------------------")
     
-    server.sendMail("vigarcheck@bccto.me", '功能验证 function', '我需要验收,逗吧')
-    
+    #server.sendMail("vigarcheck@bccto.me", '功能验证 function', '我需要验收,逗吧')
+    server.forwardMail("vigarcheck@bccto.me", 1200)
     """
+    mail=server.getMailById(1200)
+    print("*******************")
+    for k,v in mail.items():
+        print("===")
+        print("[debug]",k,v)
+    
+    print("!!!!" + str(mail['subject']))
+    print("!!!!" + str(mail['content_text']))
+    
     server.getLatestMailInfo()
     print("------------------")
     server.getMailServerStat()
