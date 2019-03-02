@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore  import *
 from WeatherEngine import queryWeatherEngine
+
 ########################################################################
 class Example(QWidget):
     """"""
@@ -37,6 +38,8 @@ class Example(QWidget):
         self.flo.addRow('',self.horz)
         self.clearBtn.clicked.connect(self.resultText.clear)
         self.queryBtn.clicked.connect(self.queryWeather)
+        
+        
         self.setLayout(self.flo)
         self.show()
     #----------------------------------------------------------------------
