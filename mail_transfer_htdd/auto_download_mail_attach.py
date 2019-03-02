@@ -4,8 +4,8 @@ from contextlib import suppress
 import traceback
 from utility import todayDateStr
 
-USERNAME = "baidu@htdadao.net"
-PASSWORD = "baidu@dmin1"
+USERNAME = ""
+PASSWORD = ""
 
 date_str=todayDateStr()
 backup_dir = './_backup/'
